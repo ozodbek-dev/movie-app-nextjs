@@ -1,14 +1,21 @@
 import React, {Fragment, useState} from 'react';
 import Head from "next/head";
 import Image from "next/image";
+import {TextField} from "@/components";
+import {Form, Formik} from "formik";
+
+const initialValue = {
+    email:"",
+    password:""
+}
 
 const Auth = () => {
     const [auth,setAuth ] = useState<"signIn"| "signUp">("signIn");
     const toggleAuth = (state:"signIn"| "signUp")=>{
         setAuth(state);
     }
-    const submitHandler = (e)=>{
-        e.preventDefault();
+    const submitHandler = (formData:any)=>{
+        console.log(formData)
     }
     return (
         <Fragment>
@@ -20,38 +27,37 @@ const Auth = () => {
             </Head>
             <div className={"auth_bg"}>
                 <div className="layer"></div>
-                    <form className="form_card" >
+                <Formik initialValues={initialValue} onSubmit={submitHandler}>
+                    <Form>
+                        <div className="form_card" >
 
-                        <div className={"flex justify-between"}>
-                            <h3 className={"text-2xl"}>{
-                                auth==="signIn"? "Sign In":"Sign Up"
-                            }</h3>
-                            <Image src={'/logo.svg'} alt={'logo'} width={40} height={40} className={'cursor-pointer object-contain'} />
-                        </div>
-                        <div className="space-y-8">
-                            <label>
-                                <input type="email" placeholder={"Email"} className="input"/>
-                            </label>
-                            <label>
-                                <input type="password" placeholder={"Password"} className="input"/>
-                            </label>
-                        </div>
-                        <button type={'submit'} className="w-full bg-red-700 text-white rounded-md transition-all duration-400 active:shadow-lg  active:scale-90 py-3 font-semibold hover:bg-red-900">
-                            Sign In
-                        </button>
-                        {
-                            auth==='signIn' ?  <div>
-                                <span>Not yet account ?</span>
-                                <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signUp")}>Sign Up Now</button>
-                            </div>:
-                                <div>
-                                <span>Already have an account ? </span>
-                                <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signIn")}>Sign In Now</button>
+                            <div className={"flex justify-between"}>
+                                <h3 className={"text-2xl"}>{
+                                    auth==="signIn"? "Sign In":"Sign Up"
+                                }</h3>
+                                <Image src={'/logo.svg'} alt={'logo'} width={40} height={40} className={'cursor-pointer object-contain'} />
                             </div>
+                            <div className="space-y-8">
+                                <TextField name={"email"} placeholder="Email" type={"email"} />
+                                <TextField name={"password"} placeholder="Password" type="password"/>
+                            </div>
+                            <button type={'submit'} className="w-full bg-red-700 text-white rounded-md transition-all duration-400 active:shadow-lg  active:scale-90 py-3 font-semibold hover:bg-red-900">
+                                Sign In
+                            </button>
+                            {
+                                auth==='signIn' ?  <div>
+                                        <span>Not yet account ?</span>
+                                        <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signUp")}>Sign Up Now</button>
+                                    </div>:
+                                    <div>
+                                        <span>Already have an account ? </span>
+                                        <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signIn")}>Sign In Now</button>
+                                    </div>
 
-                        }
-                    </form>
-
+                            }
+                        </div>
+                    </Form>
+                </Formik>
             </div>
         </Fragment>
     );
