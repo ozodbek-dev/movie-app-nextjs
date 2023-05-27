@@ -5,9 +5,15 @@ import Image from "next/image";
 import {image_base_url} from "@/helpers/constants";
 import {TbPlayerPlay} from "react-icons/tb";
 import ReactStars from "react-stars";
+import {useInfoStore} from "@/store";
 
 const Hero = ({trending}:HeroProps):JSX.Element => {
     const [movie, setMovie] = useState<IMovie>({} as IMovie);
+    const {setModal,setCurrentMovie} = useInfoStore();
+    const handleCurrentMovie = ()=>{
+        setModal(true);
+        setCurrentMovie(movie);
+    }
     useEffect(()=>{
         const randomMovie:IMovie = trending[Math.floor(Math.random() * trending.length)]
         setMovie(randomMovie)
@@ -36,7 +42,7 @@ const Hero = ({trending}:HeroProps):JSX.Element => {
              </h1>
              <p className={"text-xs md:text-lg lg:text-2xl md:line-clamp-4 line-clamp-1"}>{movie?.overview}</p>
              <div className={"md:mt-2"}>
-                 <button className={"flex justify-center align-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-500 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "}>
+                 <button className={"flex justify-center align-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-500 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "} onClick={handleCurrentMovie}>
                     <TbPlayerPlay className={"md:text-2xl text-lg"}/> <span>Watch Now</span></button>
              </div>
          </div>

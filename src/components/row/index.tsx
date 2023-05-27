@@ -26,7 +26,7 @@ const Row = ({title,movies,isBig=false}:RowProps) => {
 			<h1 className={"w-56 cursor-pointer text-sm md:text-2xl font-semibold text-[#e5e5e5] hover:text-white transition-all duration-300"}>{title}</h1>
         {/*    carousel*/}
             <div className={"group relative md:ml-2 "}>
-                <div className={"absolute top-0 bottom-0 left-0 opacity-0 group-hover:opacity-100  md:w-[300px] z-40 m-auto flex items-center justify-start px-2 bg-gradient-to-r from-slate-900 from-70% to-transparent via-30% bg-opacity-80"}>
+                <div className={"absolute top-0 bottom-0 left-0 opacity-0 group-hover:opacity-100  md:w-[150px] z-40 m-auto flex items-center justify-start px-2 bg-gradient-to-r from-slate-900 from-70% to-transparent via-30% bg-opacity-80"}>
                     <AiFillCaretLeft onClick={()=>handleClick("left")} className={` h-6 w-6 cursor-pointer opacity-0 group-hover:opacity-100 transform active:scale-125 group-hover:shadow-2xl hover:scale-150`}/>
                 </div>
 
@@ -37,7 +37,7 @@ const Row = ({title,movies,isBig=false}:RowProps) => {
                         ))
                     }
                 </div>
-                <div className={"absolute top-0 bottom-0 right-0 opacity-0 group-hover:opacity-100  md:w-[300px] z-40 m-auto flex items-center justify-end px-2 bg-gradient-to-l from-slate-900 from-70% to-transparent via-30% bg-opacity-80"}>
+                <div className={"absolute top-0 bottom-0 right-0 opacity-0 group-hover:opacity-100  md:w-[150px] z-40 m-auto flex items-center justify-end px-2 bg-gradient-to-l from-slate-900 from-70% to-transparent via-30% bg-opacity-80"}>
                     <AiFillCaretRight  onClick={()=>handleClick("right")} className={" h-6 w-6 cursor-pointer transform active:scale-125 group-hover:shadow-2xl hover:scale-150"}/>
                 </div>
 

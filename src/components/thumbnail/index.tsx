@@ -3,13 +3,18 @@ import {ThumbnailProps} from "@/components/thumbnail/thumbnail.props";
 import Image from "next/image";
 import {image_base_url} from "@/helpers/constants";
 import ReactStars from "react-stars";
+import {useInfoStore} from "@/store";
 
 const Index = ({movie,isBig=false}:ThumbnailProps) => {
-    console.log(movie)
+    const {setModal,setCurrentMovie} = useInfoStore();
+    const handleCurrentMovie = ()=>{
+        setModal(true);
+        setCurrentMovie(movie);
+    }
     const normSize ="h-[180px]  sm:h-[330px]  md:h-[440px] min-w-[292px]"
     const bigSize ="h-[220px]  sm:h-[470px]  md:h-[600px] md:min-w-[450px] min-w-[330px]"
     return (
-        <div className={`relative ${isBig?bigSize:normSize} cursor-pointer ease-out transition-all duration-300 hover:scale-105`}>
+        <div onClick={handleCurrentMovie} className={`relative ${isBig?bigSize:normSize} cursor-pointer ease-out transition-all duration-300 hover:scale-105`}>
             <Image fill
                    src={`${image_base_url}/${movie?.backdrop_path || movie?.poster_path}`}
                    alt={movie?.original_title || movie?.original_name}

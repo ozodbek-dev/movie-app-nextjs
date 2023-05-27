@@ -23,3 +23,7 @@ export interface TrendingResponse {
     total_pages: number
     total_results: number
 }
+
+export interface Element {
+    type:"Trailer"
+}

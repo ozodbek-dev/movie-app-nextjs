@@ -2,9 +2,25 @@ import Head from 'next/head';
 import {API_REQUEST} from "@/services/api.service";
 import {GetServerSideProps} from "next";
 import {IMovie, TrendingResponse} from "@/interfaces/app.interface";
-import {Hero, Row} from "@/components";
+import {Hero, Modal, Row, SubscriptionPlan} from "@/components";
+import {useContext, useEffect} from "react";
+import {AuthContext} from "@/components/context/auth.context";
+import {useRouter} from "next/router";
+import {useInfoStore, useSubscription} from "@/store";
 export default function Home({trending, top_rated, tv_top_rated, movie_popular,comedy,family,history,documentary}:HomeProps): JSX.Element {
-console.log(trending)
+	const {isLoading, user} = useContext(AuthContext);
+	const router = useRouter();
+	const {modal} = useInfoStore();
+	const {type}  = useSubscription()
+	useEffect(() => {
+		if(user) {
+			router.push('/')
+		}
+		//eslint-disable-next-line
+	},[]);
+	if(isLoading) return <h1 className={"text-2xl"}>Loading...</h1>
+	// eslint-disable-next-line react/jsx-no-undef
+	if(type) return <SubscriptionPlan/>
 	return (
 		<div>
 			<Head>
@@ -31,20 +47,25 @@ console.log(trending)
 					<Row title={"Documentary"} movies={documentary} isBig={true}/>
 				</section>
 			</main>
+			{
+				modal && <Modal/>
+			}
 		</div>
 	);
 }
 
 
 export const getServerSideProps:GetServerSideProps = async()=>{
-	const trending:TrendingResponse = await fetch(API_REQUEST.trending).then(res=>res.json())
-	const top_rated:TrendingResponse = await fetch(API_REQUEST.top_rated).then(res=>res.json())
-	const tv_top_rated:TrendingResponse = await fetch(API_REQUEST.tv_top_rated).then(res=>res.json())
-	const movie_popular:TrendingResponse = await fetch(API_REQUEST.movie_popular).then(res=>res.json())
-	const documentary:TrendingResponse = await fetch(API_REQUEST.documentary).then(res=>res.json())
-	const comedy:TrendingResponse = await fetch(API_REQUEST.comedy).then(res=>res.json())
-	const history:TrendingResponse = await fetch(API_REQUEST.history).then(res=>res.json())
-	const family:TrendingResponse = await fetch(API_REQUEST.family).then(res=>res.json())
+	const [trending,top_rated,tv_top_rated,movie_popular,documentary,comedy,history,family] = await Promise.all([
+		await fetch(API_REQUEST.trending).then(res=>res.json()),
+		await fetch(API_REQUEST.top_rated).then(res=>res.json()),
+		fetch(API_REQUEST.tv_top_rated).then(res=>res.json()),
+		fetch(API_REQUEST.movie_popular).then(res=>res.json()),
+		fetch(API_REQUEST.documentary).then(res=>res.json()),
+		fetch(API_REQUEST.comedy).then(res=>res.json()),
+		fetch(API_REQUEST.history).then(res=>res.json()),
+		fetch(API_REQUEST.family).then(res=>res.json()),
+	])
 	return {
 		props:{
 			trending:trending.results,

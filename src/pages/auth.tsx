@@ -1,21 +1,34 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useContext, useState} from 'react';
 import Head from "next/head";
 import Image from "next/image";
 import {TextField} from "@/components";
 import {Form, Formik} from "formik";
+import * as Yup from 'yup'
+import {AuthContext} from "@/components/context/auth.context";
 
 const initialValue = {
     email:"",
     password:""
 }
-
 const Auth = () => {
     const [auth,setAuth ] = useState<"signIn"| "signUp">("signIn");
+    const {error,isLoading,logout,signIn,signUp} = useContext(AuthContext);
+
     const toggleAuth = (state:"signIn"| "signUp")=>{
         setAuth(state);
     }
+
+    const validation = Yup.object({
+        email:Yup.string().email("Enter valid email").required("Email is required!"),
+        password:Yup.string().required("Password is required").min(6,"Password must be minimum 6 characters")
+    })
     const submitHandler = (formData:any)=>{
-        console.log(formData)
+        if(auth === 'signIn'){
+            signIn(formData.email,formData.password)
+        }
+        else{
+            signUp(formData.email,formData.password)
+        }
     }
     return (
         <Fragment>
@@ -27,7 +40,7 @@ const Auth = () => {
             </Head>
             <div className={"auth_bg"}>
                 <div className="layer"></div>
-                <Formik initialValues={initialValue} onSubmit={submitHandler}>
+                <Formik initialValues={initialValue} onSubmit={submitHandler} validationSchema={validation}>
                     <Form>
                         <div className="form_card" >
 
@@ -37,12 +50,13 @@ const Auth = () => {
                                 }</h3>
                                 <Image src={'/logo.svg'} alt={'logo'} width={40} height={40} className={'cursor-pointer object-contain'} />
                             </div>
+                            {error && <p className={'text-red-500 font-semibold text-center'}>{error}</p>}
                             <div className="space-y-8">
                                 <TextField name={"email"} placeholder="Email" type={"email"} />
                                 <TextField name={"password"} placeholder="Password" type="password"/>
                             </div>
-                            <button type={'submit'} className="w-full bg-red-700 text-white rounded-md transition-all duration-400 active:shadow-lg  active:scale-90 py-3 font-semibold hover:bg-red-900">
-                                Sign In
+                            <button type={'submit'} disabled={isLoading} className="w-full disabled:opacity-[50%] disabled:pointer-events-none bg-red-700 text-white rounded-md transition-all duration-400 active:shadow-lg  active:scale-90 py-3 font-semibold hover:bg-red-900">
+                                {isLoading ? "Loading..." : (auth==="signIn" ? "Sign In":"Sign Up")}
                             </button>
                             {
                                 auth==='signIn' ?  <div>

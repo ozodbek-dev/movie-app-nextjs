@@ -20,7 +20,7 @@
 		@apply w-6 h-6 cursor-pointer hover:opacity-[50%] transform hover:scale-[120%] transition-all duration-75 font-bold active:scale-[100%] ;
 	}
 	.input {
-		@apply w-full rounded bg-transparent px-5 py-4 placeholder-[gray] outline-none transition-all duration-300 transform focus:bg-slate-900 focus:shadow-md focus:translate-x-[5px] mt-3 border-2 border-slate-600 focus:border-slate-800;
+		@apply w-full rounded bg-transparent px-5 py-4 placeholder-[gray] outline-none transition-all duration-300 transform focus:bg-slate-900 focus:shadow-md border-2 border-slate-600 focus:border-slate-800;
 	}
 	.form_card{
 		@apply relative mt-24 space-y-8 rounded  py-10 px-6  md:max-w-md md:mx-14 bg-slate-700 backdrop-filter backdrop-blur-lg bg-opacity-50;
@@ -30,5 +30,8 @@
 	}
 	.layer{
 		@apply absolute top-0 left-0  w-full h-full bg-gradient-to-l bg-black backdrop-filter  backdrop-blur-sm bg-opacity-70;
+	}
+	.btn{
+		@apply w-10 h-10 border-2  duration-300 bg-slate-600 rounded-full grid place-content-center border-slate-500 hover:bg-slate-500 hover:bg-opacity-50 bg-opacity-50
 	}
 }
