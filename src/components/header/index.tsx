@@ -8,10 +8,12 @@ import {AuthContext} from "@/components/context/auth.context";
 import {FiLogOut} from "react-icons/fi";
 import {useRouter} from "next/router";
 import {useSubscription} from "@/store";
+import useAuth from "@/hooks/useAuth";
 
 const Header = () => {
 	const [scrolled, setScrolled] = useState<boolean>(false);
-	const {error,isLoading,logout, user} = useContext(AuthContext)
+	const {logout} = useContext(AuthContext)
+	const {setIsLoading} = useAuth()
 	const {type} = useSubscription()
 	const router = useRouter();
 	useEffect(() => {
@@ -48,7 +50,8 @@ const Header = () => {
 				 </>
 				 }
 				<FiLogOut className="svg" onClick={()=> {
-					logout().then(()=>{router.push("/auth");})
+					setIsLoading(true)
+					logout().then(()=>{router.push("/auth"); setIsLoading(false)})
 				}}/>
 			</div>
 		</header>

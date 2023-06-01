@@ -5,6 +5,7 @@ import {TextField} from "@/components";
 import {Form, Formik} from "formik";
 import * as Yup from 'yup'
 import {AuthContext} from "@/components/context/auth.context";
+import useAuth from "@/hooks/useAuth";
 
 const initialValue = {
     email:"",
@@ -12,7 +13,8 @@ const initialValue = {
 }
 const Auth = () => {
     const [auth,setAuth ] = useState<"signIn"| "signUp">("signIn");
-    const {error,isLoading,logout,signIn,signUp} = useContext(AuthContext);
+    const {error,signIn,signUp,} = useContext(AuthContext);
+    const {setIsLoading, isLoading} = useAuth()
 
     const toggleAuth = (state:"signIn"| "signUp")=>{
         setAuth(state);
@@ -22,11 +24,22 @@ const Auth = () => {
         email:Yup.string().email("Enter valid email").required("Email is required!"),
         password:Yup.string().required("Password is required").min(6,"Password must be minimum 6 characters")
     })
-    const submitHandler = (formData:any)=>{
+    const submitHandler = async (formData:any)=>{
         if(auth === 'signIn'){
+            setIsLoading(true)
             signIn(formData.email,formData.password)
         }
         else{
+            setIsLoading(true)
+            const response = await fetch("/api/customer", {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({email:formData.email})
+            });
+            const data = await response.json();
+            console.log(data)
             signUp(formData.email,formData.password)
         }
     }
@@ -67,7 +80,6 @@ const Auth = () => {
                                         <span>Already have an account ? </span>
                                         <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signIn")}>Sign In Now</button>
                                     </div>
-
                             }
                         </div>
                     </Form>

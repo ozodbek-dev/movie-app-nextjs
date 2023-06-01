@@ -6,7 +6,7 @@ import {TbPlayerPlay} from "react-icons/tb";
 
 export interface OptionType{
     title:string;
-    icon:ReactNode
+    icon:ReactNode,
 }
 export interface SubscriptionType {
     title: string;
@@ -17,13 +17,13 @@ export interface SubscriptionType {
 const SubscriptionPlanCard = ({title,price, options}: SubscriptionType) => {
     return (
         <div
-            className={"min-w-[200px]  md:w-[25vmax] w-[70vw] hover:shadow-slate-800  bg-gradient-to-br from-slate-900/40 via-purple-900/40 to-slate-900/40 cursor-pointer p-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 "}>
+            className={`min-w-[200px] ${title.toLowerCase() === 'starter' ? "opacity-100 scale-105":"opacity-50"}  hover:opacity-100 md:w-[20vmax] w-[70vw] hover:shadow-slate-800  bg-gradient-to-br from-slate-900/40 via-purple-900/40 to-slate-900/40 cursor-pointer p-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 `}>
             <h3 className="mb-3 lg:mb-10 mb-5  md:text-4xl text-3xl text-center font-bold text-indigo-100">
                 {title}
             </h3>
             <div className="relative flex justify-center">
                 <p className={"text-white  bg-gradient-to-br inline-block from-amber-500 via-amber-300 to-amber-900 lg:text-6xl md:text-4xl text-3xl bg-opacity-70 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg"}>
-                    ${price}
+                    {price.toLocaleString("en-US",{style:"currency", currency:"USD"})}
                 </p>
             </div>
             <div className="relative flex justify-center">
@@ -41,8 +41,10 @@ const SubscriptionPlanCard = ({title,price, options}: SubscriptionType) => {
                 ))}
             </table>
          <div className="flex justify-center">
-             <button className={"flex justify-center w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-500 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "}>
-                 <GiQueenCrown className={"md:text-3xl text-lg"}/> <span className={'text-2xl'}>Buy</span></button>
+             {price===0 ? <button className={"flex justify-center w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-400 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "}><span className={'text-2xl'}>Get Started</span>
+             </button>:<button className={"flex justify-center w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-600 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "}>
+                 <GiQueenCrown className={"md:text-3xl text-lg"}/> <span className={'text-2xl'}>Buy</span>
+             </button>}
          </div>
         </div>
     );

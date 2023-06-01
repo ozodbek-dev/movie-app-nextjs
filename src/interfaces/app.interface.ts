@@ -27,3 +27,7 @@ export interface TrendingResponse {
 export interface Element {
     type:"Trailer"
 }
+export interface ProductInterface{
+    id:string;
+    name:string;
+}
