@@ -30,4 +30,7 @@ export interface Element {
 export interface ProductInterface{
     id:string;
     name:string;
+    default_price:{
+        id:string
+    }
 }

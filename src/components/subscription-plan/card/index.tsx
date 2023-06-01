@@ -1,8 +1,8 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useContext, useState} from 'react';
 import {AiFillCheckCircle } from "react-icons/ai";
 import {GiQueenCrown} from 'react-icons/gi'
-
-import {TbPlayerPlay} from "react-icons/tb";
+import useAuth from "@/hooks/useAuth";
+import {AuthContext} from "@/components/context/auth.context";
 
 export interface OptionType{
     title:string;
@@ -11,10 +11,33 @@ export interface OptionType{
 export interface SubscriptionType {
     title: string;
     price:number,
-    options:OptionType[]
+    options:OptionType[],
+    priceId:string;
 }
 
-const SubscriptionPlanCard = ({title,price, options}: SubscriptionType) => {
+const SubscriptionPlanCard = ({title,price, options, priceId}: SubscriptionType) => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const {user} = useContext(AuthContext);
+
+
+    const onSubmitSubscription =async (priceId:string)=>{
+        setIsLoading(true)
+        const data = {email:user?.email,price_id: priceId};
+        try {
+            const res = await fetch("/api/subscription", {
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(data)
+            })
+            const result =await res.json();
+            window.open(result.subscription.url)
+            setIsLoading(false)
+        }catch (e) {
+            const error = e as Error
+            console.log(error.message)
+            setIsLoading(false)
+        }
+    }
     return (
         <div
             className={`min-w-[200px] ${title.toLowerCase() === 'starter' ? "opacity-100 scale-105":"opacity-50"}  hover:opacity-100 md:w-[20vmax] w-[70vw] hover:shadow-slate-800  bg-gradient-to-br from-slate-900/40 via-purple-900/40 to-slate-900/40 cursor-pointer p-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 `}>
@@ -41,9 +64,11 @@ const SubscriptionPlanCard = ({title,price, options}: SubscriptionType) => {
                 ))}
             </table>
          <div className="flex justify-center">
-             {price===0 ? <button className={"flex justify-center w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-400 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "}><span className={'text-2xl'}>Get Started</span>
-             </button>:<button className={"flex justify-center w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-600 opacity-100  transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 "}>
-                 <GiQueenCrown className={"md:text-3xl text-lg"}/> <span className={'text-2xl'}>Buy</span>
+             {price===0 ? <button onClick={()=>onSubmitSubscription(priceId)} disabled={isLoading} className={`flex justify-center ${isLoading ? "opacity-50":"opacity-100"} w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg bg-amber-400   transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 `}><span className={'text-2xl'}>{isLoading ? "Loading...":"Get Started"}</span>
+             </button>
+                 :
+                 <button onClick={()=>onSubmitSubscription(priceId)} disabled={isLoading} className={`flex justify-center w-[50%] font-bold mt-10 items-center gap-2 md:px-6 md:py-3 px-3 py-2 md:text-xl text-sm  border-slate-50  rounded-lg ${isLoading ? "opacity-50":"opacity-100"} bg-amber-600   transition-all duration-300  origin-center  transform active:scale-75 hover:bg-amber-700 `}>
+                 <GiQueenCrown className={"md:text-3xl text-lg"}/> <span className={'text-2xl'}>{isLoading ? "Loading...":"Buy"}</span>
              </button>}
          </div>
         </div>

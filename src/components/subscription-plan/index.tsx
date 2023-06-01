@@ -99,7 +99,8 @@ const SubscriptionPlan = ({products}: {products: ProductInterface[] }) => {
     if(products) allProducts = items.map((item,i)=>({
         ...item,
         title:products.reverse()[i].name,
-        id:products.reverse()[i].id
+        id:products.reverse()[i].id,
+        priceId:products.reverse()[i].default_price.id
     }))
     return (
         <div className={"min-h-screen flex flex-col  py-10"}>
@@ -114,9 +115,7 @@ const SubscriptionPlan = ({products}: {products: ProductInterface[] }) => {
                         allProducts && allProducts.map(prod=>(
                             <SubscriptionPlanCard
                                 key={prod.id }
-                                title={prod.title}
-                                price={prod.price}
-                                options={prod.options}
+                                {...prod}
                             />
                         ))
                     }
