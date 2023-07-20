@@ -1,59 +1,79 @@
-import React, {createContext, ReactNode, useEffect, useMemo, useState} from 'react';
-import {User} from 'firebase/auth'
+import {useAuth} from "@/hooks/useAuth";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/router";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import { auth } from "src/firebase";
 
-import useAuth from "@/hooks/useAuth";
-import {onAuthStateChanged} from "firebase/auth";
-import {auth} from "@/firebase";
-import {useRouter} from "next/router";
-
-
-interface AuthContextState  {
-    user: User |null;
-    error:string;
-    isLoading:boolean;
-    signUp:(email:string,password:string)=>void;
-    signIn:(email:string,password:string)=>void;
-    logout:()=>Promise<void>
+interface AuthContextState {
+  user: User | null;
+  error: string;
+  isLoading: boolean;
+  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextState>({
-    user:null,
-    error:"",
-    signIn:()=>{},
-    signUp:()=>{},
-    logout: async()=>{} ,
-    isLoading:false
-})
+  user: null,
+  error: "",
+  isLoading: false,
+  signIn: async () => {},
+  signUp: async () => {},
+  logout: async () => {},
+});
 
-const AuthContextProvider = ({children}:{children:ReactNode}) => {
-    const {error,isLoading,signUp,signIn,user, logout, setUser, setIsLoading} = useAuth();
-    const [initialLoader, setInitialLoader] = useState<boolean>(true);
-    const router = useRouter();
-    const value = useMemo(()=>({
-        error,isLoading,signUp,signIn,user, logout
-        //eslint-disable-next-line
-    }), [user, isLoading,error])
+const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  const [initialLoader, setInitialLoader] = useState<boolean>(true);
+  const {
+    error,
+    isLoading,
+    logout,
+    signIn,
+    signUp,
+    user,
+    setUser,
+    setIsLoading,
+  } = useAuth();
+  const router = useRouter();
 
-    useEffect(()=>onAuthStateChanged(auth,user=>{
-        if(user){
-            setIsLoading(false)
-            setUser(user);
-            router.push("/")
+  const value = useMemo(
+    () => ({
+      user,
+      isLoading,
+      logout,
+      signIn,
+      error,
+      signUp,
+    }),
+
+    // eslint-disable-next-line
+    [user, isLoading, error]
+  );
+
+  useEffect(
+    () =>
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setIsLoading(false);
+          setUser(user);
+        } else {
+          setUser(null);
+          setIsLoading(true);
+          router.push("/auth");
         }
-        else{
-            setIsLoading(true)
-            setUser(null)
-            router.push("/auth")
-        }
-        setIsLoading(false)
-        setInitialLoader(false)
-        //eslint-disable-next-line
-    }),[])
-    return (
-        <AuthContext.Provider value={value}>
-            { initialLoader ? "Loader...": children}
-        </AuthContext.Provider>
-    );
+        setIsLoading(false);
+        setInitialLoader(false);
+      }),
+
+    // eslint-disable-next-line
+    []
+  );
+
+  return (
+    <AuthContext.Provider value={value}>
+      {!initialLoader ? children : "Loading..."}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthContextProvider;

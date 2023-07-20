@@ -8,7 +8,7 @@ import {AuthContext} from "@/components/context/auth.context";
 import {FiLogOut} from "react-icons/fi";
 import {useRouter} from "next/router";
 import {useSubscription} from "@/store";
-import useAuth from "@/hooks/useAuth";
+import {useAuth} from "@/hooks/useAuth";
 
 const Header = () => {
 	const [scrolled, setScrolled] = useState<boolean>(false);
@@ -31,7 +31,7 @@ const Header = () => {
 		<header className={`${scrolled && "bg-slate-700 backdrop-filter backdrop-blur-lg bg-opacity-30 "}`}>
 			<div className='flex items-center space-x-2 md:space-x-10'>
 				<Image src={'/logo.svg'} alt={'logo'} width={56} height={56} className={'cursor-pointer object-contain'} />
-				{!type && <ul className='space-x-4 md:flex hidden'>
+				{!!type && <ul className='space-x-4 md:flex hidden'>
 					<li className='navLink'>Home</li>
 					<li className='navLink'>Movies</li>
 					<li className='navLink'>TV Shows</li>
@@ -40,7 +40,7 @@ const Header = () => {
 					</ul>}
 			</div>
 			 <div className="flex items-center text-sm space-x-4 font-light">
-				 {!type && <>
+				 {!!type && <>
 					 <AiOutlineSearch className="svg"/>
 					 <p className="hidden lg:inline">Kids</p>
 					 <BiBellMinus className="svg minus"/>

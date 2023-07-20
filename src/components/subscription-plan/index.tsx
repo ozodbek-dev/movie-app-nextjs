@@ -94,13 +94,16 @@ const items = [
     }
 ]
 
-const SubscriptionPlan = ({products}: {products: ProductInterface[] }) => {
+const SubscriptionPlan = ({ products }: { products: ProductInterface[] }) => {
+    products.forEach((item, i) => {
+        console.log(item.name, item.default_price.id)
+    })
     let allProducts;
-    if(products) allProducts = items.map((item,i)=>({
+    if (products) allProducts = items.map((item, i) => ({
         ...item,
-        title:products.reverse()[i].name,
-        id:products.reverse()[i].id,
-        priceId:products.reverse()[i].default_price.id
+        title:products[i].name,
+        id:products[i].id,
+        priceId: products[i].default_price.id,
     }))
     return (
         <div className={"min-h-screen flex flex-col  py-10"}>

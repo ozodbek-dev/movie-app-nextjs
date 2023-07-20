@@ -2,7 +2,6 @@ import * as process from "process";
 const base_url:string = process.env.TMDB_API_URL as string;
 const api_key:string = process.env.TMDB_API_KEY as string;
 const public_domain:string = process.env.PUBLIC_DOMAIN as string;
-console.log(base_url)
 export const API_REQUEST = {
     trending:`${base_url}/trending/all/week?api_key=${api_key}&language-en-US`,
     top_rated:`${base_url}/movie/top_rated?api_key=${api_key}&language-en-US`,
@@ -13,4 +12,5 @@ export const API_REQUEST = {
     family:`${base_url}/discover/movie?api_key=${api_key}&language-en-US&with_genre=10751`,
     history:`${base_url}/discover/movie?api_key=${api_key}&language-en-US&with_genre=36`,
     products_list:`${public_domain}/api/products`,
+    subscription: `${public_domain}/api/subscription`,
 }

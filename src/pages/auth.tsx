@@ -5,43 +5,33 @@ import {TextField} from "@/components";
 import {Form, Formik} from "formik";
 import * as Yup from 'yup'
 import {AuthContext} from "@/components/context/auth.context";
-import useAuth from "@/hooks/useAuth";
+import {useAuth} from "@/hooks/useAuth";
+import { useRouter } from 'next/router';
 
 const initialValue = {
     email:"",
     password:""
 }
 const Auth = () => {
+    const router = useRouter()
     const [auth,setAuth ] = useState<"signIn"| "signUp">("signIn");
     const {error,signIn,signUp,} = useContext(AuthContext);
-    const {setIsLoading, isLoading} = useAuth()
-
+    const {setIsLoading, isLoading, user} = useAuth()
+    if(user) router.push("/")
     const toggleAuth = (state:"signIn"| "signUp")=>{
         setAuth(state);
     }
-
     const validation = Yup.object({
         email:Yup.string().email("Enter valid email").required("Email is required!"),
         password:Yup.string().required("Password is required").min(6,"Password must be minimum 6 characters")
     })
-    const submitHandler = async (formData:any)=>{
-        if(auth === 'signIn'){
-            setIsLoading(true)
-            signIn(formData.email,formData.password)
-        }
-        else{
-            setIsLoading(true)
-            const response = await fetch("/api/customer", {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({email:formData.email})
-            });
-            const data = await response.json();
-            console.log(data)
-            signUp(formData.email,formData.password)
-        }
+    const submitHandler =  (formData:{email:string,password:string})=>{
+            if(auth === 'signIn'){
+                 signIn(formData.email,formData.password)
+            }
+            else{
+                signUp(formData.email,formData.password)
+            }    
     }
     return (
         <Fragment>
@@ -74,11 +64,11 @@ const Auth = () => {
                             {
                                 auth==='signIn' ?  <div>
                                         <span>Not yet account ?</span>
-                                        <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signUp")}>Sign Up Now</button>
+                                        <button type={'button'} className="dark:text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signUp")}>Sign Up Now</button>
                                     </div>:
                                     <div>
                                         <span>Already have an account ? </span>
-                                        <button type={'button'} className="text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signIn")}>Sign In Now</button>
+                                        <button type={'button'} className="dark:text-white hover:underline text-blue-600 ml-3" onClick={()=>toggleAuth("signIn")}>Sign In Now</button>
                                     </div>
                             }
                         </div>

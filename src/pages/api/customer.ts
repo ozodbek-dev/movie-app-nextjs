@@ -10,7 +10,6 @@ const stripe = new Stripe( process.env.STRIPE_SECRET_KEY as string, {
 
 export default async function handler(req:NextApiRequest,res:NextApiResponse<Data>){
     const {method}  = req;
-    console.log(method)
     if(method==='POST'){
         try {
             const {email} = req.body;

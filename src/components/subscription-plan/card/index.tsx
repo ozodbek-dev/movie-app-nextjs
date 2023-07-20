@@ -1,7 +1,7 @@
 import React, {ReactNode, useContext, useState} from 'react';
 import {AiFillCheckCircle } from "react-icons/ai";
 import {GiQueenCrown} from 'react-icons/gi'
-import useAuth from "@/hooks/useAuth";
+import {useAuth} from "@/hooks/useAuth";
 import {AuthContext} from "@/components/context/auth.context";
 
 export interface OptionType{
@@ -34,14 +34,13 @@ const SubscriptionPlanCard = ({title,price, options, priceId}: SubscriptionType)
             setIsLoading(false)
         }catch (e) {
             const error = e as Error
-            console.log(error.message)
             setIsLoading(false)
         }
     }
     return (
         <div
             className={`min-w-[200px] ${title.toLowerCase() === 'starter' ? "opacity-100 scale-105":"opacity-50"}  hover:opacity-100 md:w-[20vmax] w-[70vw] hover:shadow-slate-800  bg-gradient-to-br from-slate-900/40 via-purple-900/40 to-slate-900/40 cursor-pointer p-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 `}>
-            <h3 className="mb-3 lg:mb-10 mb-5  md:text-4xl text-3xl text-center font-bold text-indigo-100">
+            <h3 className="lg:mb-10 mb-5  md:text-4xl text-3xl text-center font-bold text-indigo-100">
                 {title}
             </h3>
             <div className="relative flex justify-center">

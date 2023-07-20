@@ -24,7 +24,6 @@ const Modal = () => {
         const fetchVideo =   ()=>{
           fetch(api).then(res=>res.json())
               .then(data=>{
-                  console.log(data.results);
                   if(data?.results){
                       const index = data.results.findIndex((el:Element)=>el.type==="Trailer")
                       setTrailer(data?.results[index]?.key);
@@ -34,7 +33,6 @@ const Modal = () => {
         fetchVideo()
         // eslint-disable-next-line
     },[currentMovie]);
-    console.log(trailer)
     return (
         <MuiModal open={modal} onClose={handleClose} className={"fixed !top-5 left-0 right-0 z-50 mx-auto w-full max-w-5xl"}>
            <>
