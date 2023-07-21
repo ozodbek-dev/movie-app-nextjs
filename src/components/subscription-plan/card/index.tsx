@@ -11,25 +11,24 @@ export interface OptionType{
 export interface SubscriptionType {
     title: string;
     price:number,
-    options:OptionType[],
+    options:OptionType[] | undefined,
     priceId:string;
 }
 
-const SubscriptionPlanCard = ({title,price, options, priceId}: SubscriptionType) => {
+const SubscriptionPlanCard = ({ title, price, options, priceId }: SubscriptionType) => {
+    const {user } = useContext(AuthContext); 
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const {user} = useContext(AuthContext);
-
-
     const onSubmitSubscription =async (priceId:string)=>{
         setIsLoading(true)
-        const data = {email:user?.email,price_id: priceId};
+        const data = { email: user?.email, price_id: priceId };
         try {
             const res = await fetch("/api/subscription", {
                 method:"POST",
                 headers:{"Content-Type":"application/json"},
                 body:JSON.stringify(data)
             })
-            const result =await res.json();
+            const result = await res.json();
+            console.log(result)
             window.open(result.subscription.url)
             setIsLoading(false)
         }catch (e) {
@@ -39,7 +38,7 @@ const SubscriptionPlanCard = ({title,price, options, priceId}: SubscriptionType)
     }
     return (
         <div
-            className={`min-w-[200px] ${title.toLowerCase() === 'starter' ? "opacity-100 scale-105":"opacity-50"}  hover:opacity-100 md:w-[20vmax] w-[70vw] hover:shadow-slate-800  bg-gradient-to-br from-slate-900/40 via-purple-900/40 to-slate-900/40 cursor-pointer p-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 `}>
+            className={`min-w-[200px] ${title.toLowerCase() === 'free trial' ? "opacity-100 scale-105":"opacity-50"}  hover:opacity-100 md:w-[20vmax] w-[70vw] hover:shadow-slate-800  bg-gradient-to-br from-slate-900/40 via-purple-900/40 to-slate-900/40 cursor-pointer p-6 rounded-xl shadow-lg transform hover:scale-105 transition duration-500 `}>
             <h3 className="lg:mb-10 mb-5  md:text-4xl text-3xl text-center font-bold text-indigo-100">
                 {title}
             </h3>
@@ -54,7 +53,7 @@ const SubscriptionPlanCard = ({title,price, options, priceId}: SubscriptionType)
                 </p>
             </div>
             <table className="my-4 w-full flex flex-col gap-3">
-                {options.map(item => (
+                {options?.map(item => (
                     <tr key={item.title} className={'flex items-center justify-between gap-5'}>
                         <td className={" text-3xl text-yellow-400"}><AiFillCheckCircle/></td>
                         <td className={" text-2xl"}>{item.title}</td>
