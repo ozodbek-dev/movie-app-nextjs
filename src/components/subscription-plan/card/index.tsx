@@ -1,7 +1,6 @@
 import React, {ReactNode, useContext, useState} from 'react';
 import {AiFillCheckCircle } from "react-icons/ai";
 import {GiQueenCrown} from 'react-icons/gi'
-import {useAuth} from "@/hooks/useAuth";
 import {AuthContext} from "@/components/context/auth.context";
 
 export interface OptionType{
@@ -20,7 +19,7 @@ const SubscriptionPlanCard = ({ title, price, options, priceId }: SubscriptionTy
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const onSubmitSubscription =async (priceId:string)=>{
         setIsLoading(true)
-        const data = { email: user?.email, price_id: priceId };
+        const data = { email: user?.email, priceId };
         try {
             const res = await fetch("/api/subscription", {
                 method:"POST",
@@ -28,7 +27,6 @@ const SubscriptionPlanCard = ({ title, price, options, priceId }: SubscriptionTy
                 body:JSON.stringify(data)
             })
             const result = await res.json();
-            console.log(result)
             window.open(result.subscription.url)
             setIsLoading(false)
         }catch (e) {

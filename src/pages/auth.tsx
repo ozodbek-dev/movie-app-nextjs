@@ -33,11 +33,11 @@ const Auth = () => {
     email: string;
     password: string;
   }) => {
-      if (auth === "signIn") {
-        setIsLoading(true);
+    if (auth === "signIn") {
+      setIsLoading(true);
       signIn(formData.email, formData.password);
-      } else {
-          setIsLoading(true);
+    } else {
+      setIsLoading(true);
       const response = await fetch("/api/customer/", {
         method: "POST",
         headers: {
@@ -45,8 +45,8 @@ const Auth = () => {
         },
         body: JSON.stringify(formData),
       });
-        const data = await response.json();
-        console.log(data);
+
+      const data = await response.json();
       signUp(formData.email, formData.password);
     }
   };

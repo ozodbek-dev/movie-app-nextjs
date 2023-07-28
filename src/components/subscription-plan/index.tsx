@@ -102,15 +102,14 @@ const icons = [
 ];
 
 const SubscriptionPlan = ({ products }: { products: ProductInterface[] }) => {
-  console.log(products, "products, products");
   let allProducts;
   if (products)
     allProducts = products.reverse().map((item, i) => ({
       ...item,
-      title:item.name,
-      id:item.id,
-        price: item.default_price.unit_amount / 100,
-        priceId: item.default_price.id,
+      title: item.name,
+      id: item.id,
+      price: item.default_price.unit_amount / 100,
+      priceId: item.default_price.id,
       options: item.description?.split(", ").map((el, i) => ({
         title: el,
         icon: icons[i],
