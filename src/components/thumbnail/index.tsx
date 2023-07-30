@@ -17,7 +17,7 @@ const Index = ({movie,isBig=false}:ThumbnailProps) => {
         <div onClick={handleCurrentMovie} className={`relative ${isBig?bigSize:normSize} cursor-pointer ease-out transition-all duration-300 hover:scale-105`}>
             <Image fill
                    src={`${image_base_url}/${movie?.backdrop_path || movie?.poster_path}`}
-                   alt={movie?.original_title || movie?.original_name}
+                   alt={movie?.original_title || movie?.original_name || 'IMAGE'}
                    className={"object-cover rounded-sm md:rounded"}
             />
             <div className="absolute flex items-start justify-end flex-col  bottom-0 left-0 w-full min-h-[50%] px-2 py-3 bg-gradient-to-t from-slate-900 from-100% to-transparent via-20% bg-opacity-80">

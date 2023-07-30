@@ -23,7 +23,7 @@ const Hero = ({trending}:HeroProps):JSX.Element => {
             {
                 movie ?
                     <div className="absolute top-0 left-0 md:h-[100vh] sm:h-[50vh] h-[40vh] w-full -z-10 object-cover ">
-                    <Image src={`${image_base_url}/${movie?.backdrop_path || movie?.poster_path}`} alt={movie.original_title} fill className={"object-cover -z-20 "}/>
+                    <Image src={`${image_base_url}/${movie?.backdrop_path || movie?.poster_path}`} alt={movie.original_title || "image"} fill className={"object-cover -z-20 "}/>
                 </div>
                     :
                     <h1>Loading ... </h1>

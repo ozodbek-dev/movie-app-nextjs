@@ -6,18 +6,17 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { AuthContext } from "@/components/context/auth.context";
 import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { GetServerSideProps } from "next";
 
 const initialValue = {
   email: "",
   password: "",
 };
 const Auth = () => {
-  const router = useRouter();
   const [auth, setAuth] = useState<"signIn" | "signUp">("signIn");
   const { error, signIn, signUp } = useContext(AuthContext);
   const { setIsLoading, isLoading, user } = useAuth();
-  if (user) router.push("/");
   const toggleAuth = (state: "signIn" | "signUp") => {
     setAuth(state);
   };
@@ -32,23 +31,16 @@ const Auth = () => {
   const submitHandler = async (formData: {
     email: string;
     password: string;
+
   }) => {
     if (auth === "signIn") {
       setIsLoading(true);
       signIn(formData.email, formData.password);
     } else {
       setIsLoading(true);
-      const response = await fetch("/api/customer/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
       signUp(formData.email, formData.password);
     }
+    setIsLoading(false);
   };
   return (
     <Fragment>
@@ -133,5 +125,22 @@ const Auth = () => {
     </Fragment>
   );
 };
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+}) => {
+  const user_id = req.cookies.user_id;
+  if (user_id) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+  return {
+    props:{}
+  }
+}
+
 
 export default Auth;

@@ -11,10 +11,8 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const { id } = req.query;
-
     const customers = await stripe.customers.list({ limit: 100 });
     const customer = customers.data.find((c) => c.metadata.user_id === id);
-
     const subscription = await stripe.subscriptions.list({
       limit: 1,
       customer: customer?.id,
