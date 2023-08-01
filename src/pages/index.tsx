@@ -40,11 +40,11 @@ export default function Home({
 
       <main className="relative pl-4 pb-24 lg:space-y-24 lg:pl-16">
         <Hero trending={trending} />
-        <section>
-          <Row title="Top Rated" movies={topRated} />
+        <section className="flex flex-col gap-20">
+          <Row title="Top Rated" movies={topRated} isBig={true} />
           <Row title="Tv Show" movies={tvTopRated} isBig={true} />
-        {list.length > 0  &&  <Row title="My List" movies={list} />}
-          <Row title="Popular" movies={popular} isBig={true} />
+           {list.length > 0  &&  <Row title="My List" movies={list} />}
+          <Row title="Popular" movies={popular}  />
           <Row title="Documentary" movies={documentary.reverse()} />
           <Row title="History" movies={history} />
           <Row title="Family" movies={family} />

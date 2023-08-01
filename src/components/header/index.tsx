@@ -9,6 +9,7 @@ import {FiLogOut} from "react-icons/fi";
 import {useRouter} from "next/router";
 import {useSubscription} from "@/store";
 import {useAuth} from "@/hooks/useAuth";
+import NavMenu from '../nav-menu/nav-menu';
 
 const Header = () => {
 	const [scrolled, setScrolled] = useState<boolean>(false);
@@ -31,6 +32,7 @@ const Header = () => {
 		<header className={`${scrolled && "bg-slate-700 backdrop-filter backdrop-blur-lg bg-opacity-30 "}`}>
 			<div className='flex items-center space-x-2 md:space-x-10'>
 				<Image src={'/logo.svg'} alt={'logo'} width={56} height={56} className={'cursor-pointer object-contain'} />
+				<NavMenu />
 				{!!type && <ul className='space-x-4 md:flex hidden'>
 					<li className='navLink'>Home</li>
 					<li className='navLink'>Movies</li>
