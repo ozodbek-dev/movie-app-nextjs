@@ -1,4 +1,5 @@
-import { IMovie, ProductInterface } from "@/interfaces/app.interface";
+import { getList } from "@/helpers/lists";
+import { IMovie, MyList, ProductInterface } from "@/interfaces/app.interface";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { Header, Hero, Modal, Row, SubscriptionPlan } from "src/components";
@@ -17,8 +18,10 @@ export default function Home({
   comedy,
   products,
   subscription,
+  list
 }: HomeProps): JSX.Element {
   const { modal } = useInfoStore();
+ console.log(list)
   if (!subscription.length) return <SubscriptionPlan products={products} />;
 
   return (
@@ -40,6 +43,7 @@ export default function Home({
         <section>
           <Row title="Top Rated" movies={topRated} />
           <Row title="Tv Show" movies={tvTopRated} isBig={true} />
+        {list.length > 0  &&  <Row title="My List" movies={list} />}
           <Row title="Popular" movies={popular} isBig={true} />
           <Row title="Documentary" movies={documentary.reverse()} />
           <Row title="History" movies={history} />
@@ -89,6 +93,8 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
     fetch(`${API_REQUEST.subscription}/${user_id}`).then((res) => res.json()),
   ]);
 
+  const myList:MyList[] = await getList(user_id);
+
   return {
     props: {
       trending: trending.results,
@@ -101,6 +107,7 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async ({
       history: history.results,
       products: products.products.data,
       subscription: subscription.subscription.data,
+      list: myList.map(el=>el.list)
     },
   };
 };
@@ -116,4 +123,5 @@ interface HomeProps {
   history: IMovie[];
   products: ProductInterface[];
   subscription: string[];
+  list:IMovie[]
 }

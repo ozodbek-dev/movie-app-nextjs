@@ -34,4 +34,11 @@
 	.btn{
 		@apply w-10 h-10 border-2  duration-300 bg-slate-600 rounded-full grid place-content-center border-slate-500 hover:bg-slate-500 hover:bg-opacity-50 bg-opacity-50
 	}
+		.modalButton {
+		@apply flex h-11 w-11 items-center justify-center rounded-full border-2 border-[gray] bg-[#2a2a2a]/60 transition hover:border-white hover:bg-white/10;
+	}
+
+	.membershipLink {
+		@apply cursor-pointer text-blue-500 hover:underline;
+	}
 }
