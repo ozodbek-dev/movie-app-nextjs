@@ -16,8 +16,8 @@ const Modal = () => {
   const [muted, setMuted] = useState<boolean>(true);
   const [playing, setPlaying] = useState(true);
   const { modal, setModal, currentMovie } = useInfoStore();
-  const base_url: string = process.env.TMDB_API_URL as string;
-  const api_key: string = process.env.TMDB_API_KEY as string;
+  const base_url: string = process.env.REACT_APP_TMDB_API_URL as string;
+	const api_key: string = process.env.REACT_APP_TMDB_API_KEY as string;
   const [trailer, setTrailer] = useState<string>("");
   const [isLoading, setIsloading] = useState(false);
     const { user } = useContext(AuthContext);

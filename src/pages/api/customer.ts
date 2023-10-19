@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import cookie from "js-cookie";
 import Cookies from "js-cookie";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2022-11-15",
+const stripe = new Stripe(process.env.REACT_APP_STRIPE_SECRET_KEY as string, {
+	apiVersion: "2022-11-15",
 });
 
 export default async function handler(

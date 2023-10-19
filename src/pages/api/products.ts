@@ -3,8 +3,8 @@ import Stripe from 'stripe';
 import * as process from "process";
 
 
-const stripe = new Stripe( process.env.STRIPE_SECRET_KEY as string, {
-	apiVersion:"2022-11-15"
+const stripe = new Stripe(process.env.REACT_APP_STRIPE_SECRET_KEY as string, {
+	apiVersion: "2022-11-15",
 });
 
 

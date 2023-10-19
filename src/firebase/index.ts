@@ -7,12 +7,12 @@ import {getAuth} from "@firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyBPEHgUXGnIC5nfUxPr4rOCARfGs_atRSo",
-    authDomain: "movie-app-3ee29.firebaseapp.com",
-    projectId: "movie-app-3ee29",
-    storageBucket: "movie-app-3ee29.appspot.com",
-    messagingSenderId: "896583308233",
-    appId: "1:896583308233:web:019479f89fe8c877140e18"
+	apiKey: "AIzaSyBPEHgUXGnIC5nfUxPr4rOCARfGs_atRSo",
+	authDomain: "movie-app-3ee29.firebaseapp.com",
+	projectId: "movie-app-3ee29",
+	storageBucket: "movie-app-3ee29.appspot.com",
+	messagingSenderId: "896583308233",
+	appId: "1:896583308233:web:019479f89fe8c877140e18",
 };
 
 // Initialize Firebase
